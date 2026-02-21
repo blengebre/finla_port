@@ -8,6 +8,21 @@
 
   <!-- Tailwind Play CDN (good for prototyping). Replace with compiled output.css in production -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Configure Tailwind for dark mode BEFORE page renders
+    tailwind.config = {
+      darkMode: 'class'
+    }
+    
+    // Initialize theme immediately to prevent flash
+    (function() {
+      const theme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (theme === 'dark' || (!theme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
   <style>
     /* Custom styles */
     :root{--accent:theme("colors.orange.400");--gradient-start:#f97316;--gradient-end:#ec4899}
@@ -393,19 +408,31 @@
     });
 
     // Theme toggle (persist in localStorage)
+    function updateThemeIcon() {
+      const themeIcon = document.getElementById('themeIcon');
+      if (themeIcon) {
+        const isDark = document.documentElement.classList.contains('dark');
+        themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+      }
+    }
+
+    // Initialize theme icon on page load
     const themeToggle = document.getElementById('themeToggle');
     const themeIcon = document.getElementById('themeIcon');
-    const userPref = localStorage.getItem('theme');
-    const prefersDark = userPref === 'dark' || (!userPref && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    if(prefersDark) document.documentElement.classList.add('dark');
-    themeIcon.className = document.documentElement.classList.contains('dark') ? 'fas fa-sun' : 'fas fa-moon';
+    
+    // Set initial theme icon
+    updateThemeIcon();
 
-    themeToggle && themeToggle.addEventListener('click', ()=>{
-      document.documentElement.classList.toggle('dark');
-      const isDark = document.documentElement.classList.contains('dark');
-      themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
+    // Theme toggle event listener
+    if (themeToggle) {
+      themeToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.documentElement.classList.toggle('dark');
+        const isDark = document.documentElement.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        updateThemeIcon();
+      });
+    }
 
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
