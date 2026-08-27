@@ -14,11 +14,9 @@
       darkMode: 'class'
     }
     
-    // Initialize theme immediately to prevent flash
+    // Use the visitor's saved theme; light remains the default.
     (function() {
-      const theme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (theme === 'dark' || (!theme && prefersDark)) {
+      if (localStorage.getItem('theme') === 'dark') {
         document.documentElement.classList.add('dark');
       }
     })();
@@ -31,7 +29,7 @@
     .focus-outline:focus{outline:2px solid rgba(249,115,22,0.8);outline-offset:3px}
     
     /* Animated gradient background */
-    .hero-gradient{background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f172a 100%);background-size:200% 200%;animation:gradientShift 8s ease infinite}
+    .hero-gradient{background:linear-gradient(135deg,#ffffff 0%,#fff7ed 52%,#fdf2f8 100%);background-size:200% 200%;animation:gradientShift 8s ease infinite}
     @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
     
     /* Card hover effects */
@@ -52,15 +50,41 @@
     /* Smooth fade-in */
     @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
     .animate-fade-in{animation:fadeInUp 0.6s ease-out forwards}
+
+    /* Experience previews */
+    .experience-preview{aspect-ratio:16/8;object-fit:cover;object-position:top;transition:transform .5s ease}
+    .experience-card:hover .experience-preview{transform:scale(1.03)}
+
+    /* Motion */
+    @keyframes floatGlow{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(18px,-22px,0) scale(1.08)}}
+    .hero-orb{animation:floatGlow 9s ease-in-out infinite}
+    .hero-orb-delayed{animation:floatGlow 11s ease-in-out -4s infinite}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+    .reveal.is-visible{opacity:1;transform:translateY(0)}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+
+    /* Dark theme */
+    html.dark body{background:#0b1120!important;color:#e5e7eb!important}
+    html.dark header{background:rgba(11,17,32,.86)!important;border-bottom:1px solid rgba(148,163,184,.16)}
+    html.dark .hero-gradient{background:linear-gradient(135deg,#0b1120 0%,#131f38 52%,#211529 100%)}
+    html.dark section{background:#0b1120!important}
+    html.dark #about,html.dark #contact{background:linear-gradient(180deg,#111827,#0b1120)!important}
+    html.dark #experience,html.dark #projects{background:#111827!important}
+    html.dark [class*="bg-white"]{background-color:#172033!important}
+    html.dark [class*="bg-gray-50"]{background-color:#111827!important}
+    html.dark [class*="border-gray"]{border-color:#334155!important}
+    html.dark [class*="text-gray-600"],html.dark [class*="text-gray-700"],html.dark [class*="text-gray-800"]{color:#cbd5e1!important}
+    html.dark .glass{background:rgba(30,41,59,.68);border-color:rgba(148,163,184,.22)}
+    html.dark .card-hover:hover{box-shadow:0 25px 50px -12px rgba(251,146,60,.2)}
   </style>
   <link rel="preload" as="image" href="images/photo_2025-08-20_20-47-02.jpg">
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
-<body class="antialiased text-gray-800 bg-white dark:bg-gray-900 dark:text-gray-100">
+<body class="antialiased text-gray-800 bg-white">
 
   <!-- Header / Nav -->
-  <header class="fixed top-0 left-0 right-0 bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm z-40">
+  <header class="fixed top-0 left-0 right-0 bg-white/60 backdrop-blur-sm z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <a href="#home" class="flex items-center gap-3 focus-outline" aria-label="Blen Gebre home">
@@ -69,7 +93,7 @@
           </div>
           <div class="hidden sm:block">
             <h1 class="text-lg font-extrabold">Blen Gebre</h1>
-            <p class="text-xs text-gray-500 dark:text-gray-400">MERN Stack Developer</p>
+            <p class="text-xs text-gray-500">MERN Stack Developer</p>
           </div>
         </a>
 
@@ -97,7 +121,7 @@
     </div>
 
     <!-- Mobile menu -->
-    <div id="mobileMenu" class="md:hidden hidden border-t border-gray-200 dark:border-gray-700">
+    <div id="mobileMenu" class="md:hidden hidden border-t border-gray-200">
       <div class="px-4 py-4 flex flex-col gap-3">
         <a href="#about" class="py-2">About</a>
         <a href="#experience" class="py-2">Experience</a>
@@ -113,29 +137,29 @@
     <section class="relative min-h-[85vh] hero-gradient flex items-center overflow-hidden">
       <!-- Decorative elements -->
       <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute -top-40 -right-40 w-80 h-80 bg-orange-500/20 rounded-full blur-3xl"></div>
-        <div class="absolute top-1/2 -left-20 w-60 h-60 bg-pink-500/20 rounded-full blur-3xl"></div>
+        <div class="hero-orb absolute -top-40 -right-40 w-80 h-80 bg-orange-500/20 rounded-full blur-3xl"></div>
+        <div class="hero-orb-delayed absolute top-1/2 -left-20 w-60 h-60 bg-pink-500/20 rounded-full blur-3xl"></div>
         <div class="absolute bottom-0 right-1/3 w-40 h-40 bg-amber-500/10 rounded-full blur-2xl"></div>
       </div>
-      <div class="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-800/80 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-orange-50/70 to-transparent"></div>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 py-24">
-          <div class="lg:pr-12 text-white lg:text-right text-center">
-            <p class="text-orange-400 font-medium mb-2 animate-fade-in">Welcome to my portfolio</p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 items-center gap-12 py-20 lg:py-24">
+          <div class="lg:pr-12 text-gray-900 lg:text-right text-center">
+            <p class="text-orange-400 font-semibold tracking-[0.18em] uppercase text-sm mb-4 animate-fade-in">Developer · AI Researcher · Builder</p>
             <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight animate-fade-in">Hi, I'm <span class="clip-gradient">Blen Gebre</span></h2>
-            <p class="mt-4 text-xl font-semibold text-gray-200 animate-fade-in">MERN Stack Developer & AI Intern</p>
-            <p class="mt-6 max-w-xl mx-auto lg:mx-0 text-base text-gray-300 leading-relaxed animate-fade-in">I build scalable web applications using MongoDB, Express, React, Node.js, Python, and Java. Currently interning at Ethiopia AI Institute. I focus on clean architecture, performance, and shipping production-ready features.</p>
+            <p class="mt-4 text-xl font-semibold text-gray-700 animate-fade-in">MERN Stack Developer & AI Intern</p>
+            <p class="mt-6 max-w-xl mx-auto lg:ml-auto text-base text-gray-600 leading-relaxed animate-fade-in">I build scalable web applications using MongoDB, Express, React, Node.js, Python, and Java. I focus on clean architecture, performance, and shipping production-ready features.</p>
 
             <div class="mt-10 flex items-center justify-center lg:justify-end gap-4">
-              <a href="#contact" class="inline-flex items-center gap-2 glass px-6 py-3 rounded-full text-white font-medium hover:bg-white/10 transition-all duration-300 hover:scale-105">
-                Contact me <i class="fas fa-arrow-right"></i>
+              <a href="#experience" class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 px-6 py-3 rounded-full text-white font-semibold hover:scale-105 transition-all duration-300 shadow-lg shadow-orange-500/30">
+                Explore my work <i class="fas fa-arrow-down"></i>
               </a>
-              <a href="BlenGebreResume.pdf" class="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-3 rounded-full font-medium hover:scale-105 transition-all duration-300 shadow-lg shadow-orange-500/30">
-                <i class="fas fa-download"></i> Download CV
+              <a href="#contact" class="inline-flex items-center gap-2 border border-gray-300 bg-white/70 px-6 py-3 rounded-full text-gray-800 font-medium hover:bg-white transition-all duration-300 hover:scale-105">
+                Let's talk <i class="fas fa-arrow-right"></i>
               </a>
             </div>
 
-            <div class="mt-8 flex items-center justify-center lg:justify-end gap-5 text-white">
+            <div class="mt-8 flex items-center justify-center lg:justify-end gap-5 text-gray-700">
               <a href="https://github.com/blengebre" target="_blank" rel="noopener" aria-label="GitHub" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:text-orange-400 hover:scale-110 transition"><i class="fab fa-github fa-lg"></i></a>
               <a href="https://www.linkedin.com/in/blen-gebre-8810322b0/" target="_blank" rel="noopener" aria-label="LinkedIn" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:text-orange-400 hover:scale-110 transition"><i class="fab fa-linkedin fa-lg"></i></a>
               <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full glass flex items-center justify-center hover:text-orange-400 hover:scale-110 transition"><i class="fab fa-instagram fa-lg"></i></a>
@@ -145,8 +169,8 @@
 
           <div class="flex justify-center lg:justify-start">
             <div class="relative group">
-              <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-3xl blur opacity-40 group-hover:opacity-60 transition"></div>
-              <div class="relative w-72 h-72 sm:w-80 sm:h-80 rounded-2xl overflow-hidden shadow-2xl ring-4 ring-white/10">
+              <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-3xl blur opacity-30 group-hover:opacity-50 transition"></div>
+              <div class="relative w-72 h-72 sm:w-80 sm:h-80 rounded-2xl overflow-hidden shadow-2xl ring-4 ring-white">
                 <img src="images/photo_2025-08-20_20-47-02.jpg" alt="Blen Gebre portrait" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
             </div>
@@ -156,75 +180,97 @@
     </section>
 
     <!-- About -->
-    <section id="about" class="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 scroll-mt-24">
+    <section id="about" class="py-20 bg-gradient-to-b from-gray-50 to-white scroll-mt-24">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h3 class="text-4xl font-bold text-center bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">About Me</h3>
-        <p class="mt-6 text-center text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg">I am a MERN Stack Developer studying Software Engineering. I like building efficient and maintainable web apps, and I enjoy collaborating across product and design teams to deliver features that users love.</p>
-
-        <!-- Experience Section -->
-        <div id="experience" class="mt-16 scroll-mt-24">
-          <h4 class="text-2xl font-bold text-center mb-10 text-gray-800 dark:text-white">Experience</h4>
-          <div class="space-y-8 max-w-3xl mx-auto pl-8 md:pl-12">
-            <div class="p-6 bg-white dark:bg-gray-700/80 rounded-2xl shadow-lg card-hover border-l-4 border-orange-500 timeline-dot">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="px-2 py-1 text-xs font-semibold bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-full">Current</span>
-              </div>
-              <h5 class="font-bold text-lg">AI Intern</h5>
-              <p class="text-orange-500 font-medium">Ethiopia Artificial Intelligence Institute</p>
-              <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">Working on cutting-edge AI projects and contributing to Ethiopia's AI research and development initiatives.</p>
-            </div>
-            <div class="p-6 bg-white dark:bg-gray-700/80 rounded-2xl shadow-lg card-hover border-l-4 border-emerald-500 timeline-dot">
-              <div class="flex items-center gap-2 mb-2">
-                <span class="px-2 py-1 text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full">Winner</span>
-              </div>
-              <h5 class="font-bold text-lg">Afro Chain Hackathon — Winner</h5>
-              <p class="text-emerald-600 dark:text-emerald-400 font-medium">Hackathon</p>
-              <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">Won the Afro Chain Hackathon, showcasing innovative blockchain and web3 solutions.</p>
-            </div>
-            <div class="p-6 bg-white dark:bg-gray-700/80 rounded-2xl shadow-lg card-hover border-l-4 border-pink-500 timeline-dot">
-              <h5 class="font-bold text-lg">Intern</h5>
-              <p class="text-pink-500 font-medium">Dev Tech</p>
-              <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">Participated in the Her Commerce Hackathon and received a certificate. Gained hands-on experience in building commerce solutions.</p>
-            </div>
-            <div class="p-6 bg-white dark:bg-gray-700/80 rounded-2xl shadow-lg card-hover border-l-4 border-amber-500 timeline-dot">
-              <h5 class="font-bold text-lg">Founder</h5>
-              <p class="text-amber-600 dark:text-amber-400 font-medium">Blue and Red Tutoring Service</p>
-              <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">Founded and led an educational tutoring service, managing operations and helping students achieve their academic goals.</p>
-            </div>
-          </div>
-        </div>
+        <p class="mt-6 text-center text-gray-600 max-w-3xl mx-auto text-lg">I am a MERN Stack Developer studying Software Engineering. I like building efficient and maintainable web apps, and I enjoy collaborating across product and design teams to deliver features that users love.</p>
 
         <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="p-6 bg-white dark:bg-gray-700/80 rounded-2xl shadow-lg card-hover">
-            <div class="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-4">
+          <div class="p-6 bg-white rounded-2xl shadow-lg card-hover">
+            <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center mb-4">
               <i class="fas fa-rocket text-orange-500 text-xl"></i>
             </div>
             <h4 class="font-semibold text-lg">Experience</h4>
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">Built several CRUD apps, e-commerce backends, streaming platforms. Won Afro Chain Hackathon. Participated in Her Commerce Hackathon.</p>
+            <p class="mt-2 text-sm text-gray-600">Built several CRUD apps, e-commerce backends, streaming platforms. Won Afro Chain Hackathon. Participated in Her Commerce Hackathon.</p>
           </div>
-          <div class="p-6 bg-white dark:bg-gray-700/80 rounded-2xl shadow-lg card-hover">
-            <div class="w-12 h-12 rounded-xl bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center mb-4">
+          <div class="p-6 bg-white rounded-2xl shadow-lg card-hover">
+            <div class="w-12 h-12 rounded-xl bg-pink-100 flex items-center justify-center mb-4">
               <i class="fas fa-bullseye text-pink-500 text-xl"></i>
             </div>
             <h4 class="font-semibold text-lg">Focus</h4>
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">Frontend performance, API design, database modeling, AI/ML integration, and developer experience.</p>
+            <p class="mt-2 text-sm text-gray-600">Frontend performance, API design, database modeling, AI/ML integration, and developer experience.</p>
           </div>
-          <div class="p-6 bg-white dark:bg-gray-700/80 rounded-2xl shadow-lg card-hover">
-            <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-4">
+          <div class="p-6 bg-white rounded-2xl shadow-lg card-hover">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center mb-4">
               <i class="fas fa-tools text-amber-500 text-xl"></i>
             </div>
             <h4 class="font-semibold text-lg">Tools</h4>
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">React, Redux, Node.js, Express, MongoDB, Python, Java, Tailwind CSS, Git</p>
+            <p class="mt-2 text-sm text-gray-600">React, Redux, Node.js, Express, MongoDB, Python, Java, Tailwind CSS, Git</p>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- Experience -->
+    <section id="experience" class="py-20 bg-gray-50 scroll-mt-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h3 class="text-4xl font-bold text-center bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">Experience</h3>
+        <p class="mt-4 text-center text-gray-600 max-w-3xl mx-auto text-lg">Recent product, AI research, and open-data work.</p>
+
+        <div class="mt-12 space-y-8 max-w-4xl mx-auto pl-8 md:pl-12">
+          <article class="experience-card p-6 bg-white rounded-2xl shadow-lg card-hover border-l-4 border-blue-500 timeline-dot">
+            <div class="flex flex-wrap items-center gap-2 mb-3"><span class="px-2 py-1 text-xs font-semibold bg-blue-100 text-blue-600 rounded-full">Full-stack web development</span></div>
+            <h4 class="font-bold text-xl">Visa &amp; CBE — FIFA World Cup Match Platform</h4>
+            <p class="mt-1 font-medium text-blue-600">Visa and Commercial Bank of Ethiopia</p>
+            <a href="https://visaand-cbe-psi.vercel.app/" target="_blank" rel="noopener" class="block mt-5 overflow-hidden rounded-xl border border-gray-200"><img src="images/visa-cbe-preview.png" alt="Visa and CBE FIFA World Cup platform preview" class="experience-preview w-full"></a>
+            <p class="mt-3 text-sm leading-relaxed text-gray-600">Built the full website experience for FIFA World Cup match activities, including an admin page, operational dashboard, and feedback page.</p>
+            <div class="mt-5 flex flex-wrap gap-3"><a href="https://visaand-cbe-psi.vercel.app/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium hover:bg-blue-700 transition"><i class="fas fa-arrow-up-right-from-square"></i> Live Site</a><a href="https://github.com/blengebre/VisaandCbe.git" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-full text-sm font-medium hover:bg-gray-700 transition"><i class="fab fa-github"></i> Source Code</a></div>
+          </article>
+
+          <article class="experience-card p-6 bg-white rounded-2xl shadow-lg card-hover border-l-4 border-violet-500 timeline-dot">
+            <div class="flex flex-wrap items-center gap-2 mb-3"><span class="px-2 py-1 text-xs font-semibold bg-violet-100 text-violet-600 rounded-full">Personal developer</span></div>
+            <h4 class="font-bold text-xl">MiniMe</h4>
+            <p class="mt-1 font-medium text-violet-600">I Connect — Founder Philipos</p>
+            <a href="https://github.com/philipos2424/MiniMe" target="_blank" rel="noopener" class="block mt-5 overflow-hidden rounded-xl border border-gray-200"><img src="images/minime-preview.png" alt="MiniMe project repository preview" class="experience-preview w-full"></a>
+            <p class="mt-3 text-sm leading-relaxed text-gray-600">Worked as a personal developer for the I Connect founder, contributing to the recently developed MiniMe project.</p>
+            <div class="mt-5"><a href="https://github.com/philipos2424/MiniMe.git" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-full text-sm font-medium hover:bg-gray-700 transition"><i class="fab fa-github"></i> View Project</a></div>
+          </article>
+
+          <article class="experience-card p-6 bg-white rounded-2xl shadow-lg card-hover border-l-4 border-orange-500 timeline-dot">
+            <div class="flex flex-wrap items-center gap-2 mb-3"><span class="px-2 py-1 text-xs font-semibold bg-orange-100 text-orange-600 rounded-full">February–September</span><span class="px-2 py-1 text-xs font-semibold bg-orange-100 text-orange-600 rounded-full">Machine learning</span></div>
+            <h4 class="font-bold text-xl">AI &amp; Machine Translation Research</h4>
+            <p class="mt-1 font-medium text-orange-600">Ethiopian Artificial Intelligence Institute</p>
+            <a href="https://github.com/blengebre/Machine_Translation_amh_to_oromo" target="_blank" rel="noopener" class="block mt-5 overflow-hidden rounded-xl border border-gray-200"><img src="images/translation-preview.png" alt="Amharic to Oromo machine translation project preview" class="experience-preview w-full"></a>
+            <p class="mt-3 text-sm leading-relaxed text-gray-600">Worked on machine learning and speech-to-text transcription, and completed an Amharic-to-Oromo machine translation project recognized among the best machine translation projects.</p>
+            <div class="mt-5"><a href="https://github.com/blengebre/Machine_Translation_amh_to_oromo.git" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-full text-sm font-medium hover:bg-gray-700 transition"><i class="fab fa-github"></i> View Project</a></div>
+          </article>
+
+          <article class="experience-card p-6 bg-white rounded-2xl shadow-lg card-hover border-l-4 border-rose-500 timeline-dot">
+            <div class="flex flex-wrap items-center gap-2 mb-3"><span class="px-2 py-1 text-xs font-semibold bg-rose-100 text-rose-600 rounded-full">AI web application</span></div>
+            <h4 class="font-bold text-xl">Fistula Clarity AI</h4>
+            <p class="mt-1 font-medium text-rose-600">AI-powered healthcare website</p>
+            <a href="https://huggingface.co/spaces/blen2121/detect" target="_blank" rel="noopener" class="block mt-5 overflow-hidden rounded-xl border border-gray-200"><img src="images/fistula-preview.png" alt="Fistula Clarity AI live application preview" class="experience-preview w-full"></a>
+            <p class="mt-3 text-sm leading-relaxed text-gray-600">Built and completed an AI-powered web application for fistula detection.</p>
+            <div class="mt-5"><a href="https://huggingface.co/spaces/blen2121/detect" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-gray-900 rounded-full text-sm font-medium hover:bg-amber-400 transition"><i class="fas fa-arrow-up-right-from-square"></i> Open Live App</a></div>
+          </article>
+
+          <article class="experience-card p-6 bg-white rounded-2xl shadow-lg card-hover border-l-4 border-emerald-500 timeline-dot">
+            <div class="flex flex-wrap items-center gap-2 mb-3"><span class="px-2 py-1 text-xs font-semibold bg-emerald-100 text-emerald-600 rounded-full">Open dataset</span><span class="px-2 py-1 text-xs font-semibold bg-emerald-100 text-emerald-600 rounded-full">40,180 rows</span></div>
+            <h4 class="font-bold text-xl">Negarit Gazette Amharic–English Parallel Corpus</h4>
+            <p class="mt-1 font-medium text-emerald-600">Ethio-NLP-Team on Hugging Face</p>
+            <a href="https://huggingface.co/datasets/Ethio-NLP-Team/negarret_gazeeta_amahric_to_english" target="_blank" rel="noopener" class="block mt-5 overflow-hidden rounded-xl border border-gray-200"><img src="images/negarit-gazette-preview.svg" alt="Negarit Gazette dataset details preview" class="experience-preview w-full"></a>
+            <p class="mt-3 text-sm leading-relaxed text-gray-600">Published a two-column CSV corpus containing 40,180 accurately aligned Amharic and English sentence pairs from Ethiopian Federal Negarit Gazette proclamations and regulations.</p>
+            <div class="mt-5"><a href="https://huggingface.co/datasets/Ethio-NLP-Team/negarret_gazeeta_amahric_to_english" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 text-gray-900 rounded-full text-sm font-medium hover:bg-amber-400 transition"><i class="fas fa-database"></i> View Dataset</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- Skills -->
-    <section id="skills" class="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 scroll-mt-24">
+    <section id="skills" class="py-20 bg-gradient-to-b from-white to-gray-50 scroll-mt-24">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h3 class="text-4xl font-bold text-center bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent mb-4">Skills & Technologies</h3>
-        <p class="text-center text-gray-600 dark:text-gray-400 mb-12 max-w-2xl mx-auto">Languages and technologies I work with</p>
+        <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Languages and technologies I work with</p>
         
         <!-- Language badges -->
         <div class="flex flex-wrap justify-center gap-3 mb-12">
@@ -235,60 +281,60 @@
           <span class="skill-badge px-5 py-2.5 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-full font-medium shadow-lg">Redux</span>
           <span class="skill-badge px-5 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full font-medium shadow-lg">Node.js</span>
           <span class="skill-badge px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-full font-medium shadow-lg">MongoDB</span>
-          <span class="skill-badge px-5 py-2.5 bg-gray-800 dark:bg-gray-700 text-white rounded-full font-medium shadow-lg">Express</span>
+          <span class="skill-badge px-5 py-2.5 bg-gray-800 text-white rounded-full font-medium shadow-lg">Express</span>
           <span class="skill-badge px-5 py-2.5 bg-sky-500 text-white rounded-full font-medium shadow-lg">Tailwind CSS</span>
           <span class="skill-badge px-5 py-2.5 bg-orange-400 text-white rounded-full font-medium shadow-lg">HTML/CSS</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg card-hover border border-gray-100 dark:border-gray-700">
-            <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-3">
+          <div class="p-6 bg-white rounded-2xl shadow-lg card-hover border border-gray-100">
+            <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mb-3">
               <i class="fab fa-react text-blue-500 text-xl"></i>
             </div>
             <h5 class="font-semibold text-lg">Frontend</h5>
-            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">React, React Router, Redux, Tailwind, HTML/CSS</p>
+            <p class="text-sm text-gray-600 mt-1">React, React Router, Redux, Tailwind, HTML/CSS</p>
           </div>
-          <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg card-hover border border-gray-100 dark:border-gray-700">
-            <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-3">
+          <div class="p-6 bg-white rounded-2xl shadow-lg card-hover border border-gray-100">
+            <div class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center mb-3">
               <i class="fab fa-node-js text-green-600 text-xl"></i>
             </div>
             <h5 class="font-semibold text-lg">Backend</h5>
-            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Node.js, Express, REST APIs, JWT, Python, Java</p>
+            <p class="text-sm text-gray-600 mt-1">Node.js, Express, REST APIs, JWT, Python, Java</p>
           </div>
-          <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg card-hover border border-gray-100 dark:border-gray-700">
-            <div class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-3">
+          <div class="p-6 bg-white rounded-2xl shadow-lg card-hover border border-gray-100">
+            <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center mb-3">
               <i class="fas fa-database text-emerald-600 text-xl"></i>
             </div>
             <h5 class="font-semibold text-lg">Database</h5>
-            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">MongoDB, Mongoose, Data Modeling</p>
+            <p class="text-sm text-gray-600 mt-1">MongoDB, Mongoose, Data Modeling</p>
           </div>
-          <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg card-hover border border-gray-100 dark:border-gray-700">
-            <div class="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center mb-3">
+          <div class="p-6 bg-white rounded-2xl shadow-lg card-hover border border-gray-100">
+            <div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center mb-3">
               <i class="fas fa-wrench text-orange-500 text-xl"></i>
             </div>
             <h5 class="font-semibold text-lg">Dev Tools</h5>
-            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Git, Docker, Postman, VS Code</p>
+            <p class="text-sm text-gray-600 mt-1">Git, Docker, Postman, VS Code</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Projects -->
-    <section id="projects" class="py-20 bg-gray-50 dark:bg-gray-800 scroll-mt-24">
+    <section id="projects" class="py-20 bg-gray-50 scroll-mt-24">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h3 class="text-4xl font-bold text-center bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent mb-4">Selected Projects</h3>
-        <p class="text-center text-gray-600 dark:text-gray-400 mb-12">Things I've built and contributed to</p>
+        <p class="text-center text-gray-600 mb-12">Things I've built and contributed to</p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <!-- E-commerce Project -->
-          <article class="p-6 bg-white dark:bg-gray-700 rounded-2xl shadow-lg card-hover border border-gray-100 dark:border-gray-600 overflow-hidden group">
+          <article class="p-6 bg-white rounded-2xl shadow-lg card-hover border border-gray-100 overflow-hidden group">
             <div class="h-2 bg-gradient-to-r from-orange-500 to-pink-500"></div>
             <div class="mt-4">
               <div class="flex items-center gap-2 mb-2">
                 <i class="fas fa-shopping-cart text-orange-500 text-xl"></i>
                 <h4 class="font-bold text-lg">E-Commerce Backend</h4>
               </div>
-              <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">Full-featured e-commerce backend with product management, cart, orders, and payment integration. Built with Node.js, Express, MongoDB for the A2SV program.</p>
+              <p class="mt-2 text-sm text-gray-600">Full-featured e-commerce backend with product management, cart, orders, and payment integration. Built with Node.js, Express, MongoDB for the A2SV program.</p>
               <div class="mt-4 flex items-center gap-3">
                 <a href="https://github.com/blengebre/Ecommerce_A2SV" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-full text-sm font-medium hover:bg-orange-600 transition">
                   <i class="fab fa-github"></i> View Code
@@ -298,14 +344,14 @@
           </article>
 
           <!-- Netflix Clone -->
-          <article class="p-6 bg-white dark:bg-gray-700 rounded-2xl shadow-lg card-hover border border-gray-100 dark:border-gray-600 overflow-hidden group">
+          <article class="p-6 bg-white rounded-2xl shadow-lg card-hover border border-gray-100 overflow-hidden group">
             <div class="h-2 bg-gradient-to-r from-red-600 to-red-800"></div>
             <div class="mt-4">
               <div class="flex items-center gap-2 mb-2">
                 <i class="fas fa-film text-red-500 text-xl"></i>
                 <h4 class="font-bold text-lg">Netflix Clone</h4>
               </div>
-              <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">A Netflix-inspired streaming platform with content browsing, user authentication, and modern UI. Built with React and modern web technologies.</p>
+              <p class="mt-2 text-sm text-gray-600">A Netflix-inspired streaming platform with content browsing, user authentication, and modern UI. Built with React and modern web technologies.</p>
               <div class="mt-4 flex items-center gap-3">
                 <a href="https://github.com/blengebre/Netflix" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-full text-sm font-medium hover:bg-red-700 transition">
                   <i class="fab fa-github"></i> View Code
@@ -315,14 +361,14 @@
           </article>
 
           <!-- AfeoChain -->
-          <article class="p-6 bg-white dark:bg-gray-700 rounded-2xl shadow-lg card-hover border border-gray-100 dark:border-gray-600 overflow-hidden group">
+          <article class="p-6 bg-white rounded-2xl shadow-lg card-hover border border-gray-100 overflow-hidden group">
             <div class="h-2 bg-gradient-to-r from-emerald-500 to-teal-600"></div>
             <div class="mt-4">
               <div class="flex items-center gap-2 mb-2">
                 <i class="fas fa-leaf text-emerald-500 text-xl"></i>
                 <h4 class="font-bold text-lg">AfeoChain — Agriculture Marketplace</h4>
               </div>
-              <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">A blockchain-enabled marketplace to help farmers list and sell produce internationally.</p>
+              <p class="mt-2 text-sm text-gray-600">A blockchain-enabled marketplace to help farmers list and sell produce internationally.</p>
               <div class="mt-4 flex items-center gap-3">
                 <a href="#" class="text-orange-500 hover:underline text-sm font-medium">View Project</a>
               </div>
@@ -330,16 +376,16 @@
           </article>
 
           <!-- Other Contributions -->
-          <article class="p-6 bg-white dark:bg-gray-700 rounded-2xl shadow-lg card-hover border border-gray-100 dark:border-gray-600 overflow-hidden group">
+          <article class="p-6 bg-white rounded-2xl shadow-lg card-hover border border-gray-100 overflow-hidden group">
             <div class="h-2 bg-gradient-to-r from-purple-500 to-indigo-600"></div>
             <div class="mt-4">
               <div class="flex items-center gap-2 mb-2">
                 <i class="fas fa-code-branch text-purple-500 text-xl"></i>
                 <h4 class="font-bold text-lg">Other Contributions</h4>
               </div>
-              <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">Open-source contributions, Her Commerce Hackathon prototype, and small utilities. Check my GitHub for more.</p>
+              <p class="mt-2 text-sm text-gray-600">Open-source contributions, Her Commerce Hackathon prototype, and small utilities. Check my GitHub for more.</p>
               <div class="mt-4 flex items-center gap-3">
-                <a href="https://github.com/blengebre" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 dark:bg-gray-600 text-white rounded-full text-sm font-medium hover:bg-gray-700 transition">
+                <a href="https://github.com/blengebre" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-full text-sm font-medium hover:bg-gray-700 transition">
                   <i class="fab fa-github"></i> GitHub
                 </a>
               </div>
@@ -350,26 +396,26 @@
     </section>
 
     <!-- Contact -->
-    <section id="contact" class="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 scroll-mt-24">
+    <section id="contact" class="py-20 bg-gradient-to-b from-gray-50 to-white scroll-mt-24">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h3 class="text-4xl font-bold text-center bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">Get In Touch</h3>
-        <p class="text-center mt-4 text-gray-600 dark:text-gray-400 text-lg">Interested in collaborating or hiring? Send a message and I'll reply soon.</p>
+        <p class="text-center mt-4 text-gray-600 text-lg">Interested in collaborating or hiring? Send a message and I'll reply soon.</p>
 
-        <form class="mt-10 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700" action="mailto:your.email@example.com" method="post" enctype="text/plain">
+        <form class="mt-10 bg-white p-8 rounded-2xl shadow-xl border border-gray-100" action="mailto:your.email@example.com" method="post" enctype="text/plain">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <label class="flex flex-col">
-              <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">First name</span>
-              <input name="firstName" required class="p-4 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition" placeholder="Your name" />
+              <span class="text-sm font-medium text-gray-700 mb-2">First name</span>
+              <input name="firstName" required class="p-4 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition" placeholder="Your name" />
             </label>
             <label class="flex flex-col">
-              <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</span>
-              <input type="email" name="email" required class="p-4 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition" placeholder="your@email.com" />
+              <span class="text-sm font-medium text-gray-700 mb-2">Email</span>
+              <input type="email" name="email" required class="p-4 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition" placeholder="your@email.com" />
             </label>
           </div>
 
           <label class="block mt-6">
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Message</span>
-            <textarea name="message" rows="6" required class="p-4 border border-gray-200 dark:border-gray-600 rounded-xl w-full bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition" placeholder="Your message..."></textarea>
+            <span class="text-sm font-medium text-gray-700 mb-2 block">Message</span>
+            <textarea name="message" rows="6" required class="p-4 border border-gray-200 rounded-xl w-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition" placeholder="Your message..."></textarea>
           </label>
 
           <div class="mt-6 text-right">
@@ -445,6 +491,24 @@
         }
       });
     });
+
+    // Reveal content as it enters the viewport.
+    const revealItems = document.querySelectorAll('main > section:not(:first-child), .experience-card, #projects article, footer');
+    revealItems.forEach((item, index) => {
+      item.classList.add('reveal');
+      if (item.classList.contains('experience-card') || item.closest('#projects')) {
+        item.style.transitionDelay = `${Math.min(index % 4, 3) * 90}ms`;
+      }
+    });
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealItems.forEach(item => revealObserver.observe(item));
   </script>
 </body>
 </html>

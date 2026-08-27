@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Negarit Gazette Amharic-English Parallel Corpus on Hugging Face</title>
+  <desc id="desc">Dataset page showing the corpus contains 40,180 aligned Amharic and English rows.</desc>
+  <rect width="1600" height="900" fill="#080f1d"/>
+  <rect width="1600" height="92" fill="#0b1322"/>
+  <circle cx="70" cy="46" r="19" fill="#ffd21e"/><text x="101" y="54" fill="#f8fafc" font-family="Arial, sans-serif" font-size="27" font-weight="700">Hugging Face</text>
+  <rect x="310" y="23" width="390" height="47" rx="10" fill="#101b2d" stroke="#26354e"/>
+  <text x="340" y="53" fill="#8ba0bf" font-family="Arial, sans-serif" font-size="19">Search models, datasets, users...</text>
+  <text x="955" y="53" fill="#c8d3e5" font-family="Arial, sans-serif" font-size="18">Models   Datasets   Spaces   Docs   Enterprise</text>
+  <rect x="0" y="92" width="1600" height="170" fill="#091120"/>
+  <text x="110" y="147" fill="#96a8c2" font-family="Arial, sans-serif" font-size="21">▣  Datasets:</text>
+  <text x="230" y="147" fill="#e8edf7" font-family="monospace" font-size="24" font-weight="700">Ethio-NLP-Team/negarret_gazeeta_amahric_to_english</text>
+  <rect x="1090" y="119" width="72" height="31" rx="7" fill="#111d30" stroke="#253650"/><text x="1108" y="141" fill="#a8b8ce" font-family="Arial" font-size="15">private</text>
+  <text x="110" y="203" fill="#8ba0bf" font-family="Arial" font-size="18">Languages:</text>
+  <rect x="220" y="178" width="106" height="39" rx="15" fill="#101d2d" stroke="#26405f"/><text x="239" y="203" fill="#d2e7fa" font-family="Arial" font-size="17">● Amharic</text>
+  <rect x="341" y="178" width="104" height="39" rx="15" fill="#101d2d" stroke="#26405f"/><text x="360" y="203" fill="#d2e7fa" font-family="Arial" font-size="17">● English</text>
+  <text x="110" y="250" fill="#f0f5fc" font-family="Arial" font-size="19" font-weight="700">Dataset card</text>
+  <rect x="85" y="263" width="840" height="4" fill="#d5ddeb"/>
+  <rect x="85" y="290" width="1010" height="92" rx="10" fill="#111d30" stroke="#1c304c"/>
+  <text x="112" y="329" fill="#d4deed" font-family="Arial" font-size="19" font-style="italic">The Dataset Viewer for private datasets is only available to PRO users and Team or Enterprise organizations.</text>
+  <text x="112" y="358" fill="#b6c4d7" font-family="Arial" font-size="17">Upgrade to a Team or Enterprise plan to activate the dataset viewer on your organization private datasets.</text>
+  <text x="85" y="450" fill="#f1f5f9" font-family="Arial" font-size="28" font-weight="700">Negarit Gazette Amharic-English Parallel Corpus</text>
+  <text x="85" y="515" fill="#c3cede" font-family="Arial" font-size="21">This dataset contains </text><text x="292" y="515" fill="#f5f8fc" font-family="Arial" font-size="21" font-weight="700">40,180 rows</text><text x="405" y="515" fill="#c3cede" font-family="Arial" font-size="21"> of accurately aligned parallel text in Amharic and English.</text>
+  <text x="85" y="585" fill="#f1f5f9" font-family="Arial" font-size="23" font-weight="700">Dataset Details</text>
+  <g fill="#c3cede" font-family="Arial" font-size="20"><text x="105" y="640">•  Languages: Amharic (am) and English (en)</text><text x="105" y="685">•  Total Rows: 40,180 parallel sentences/paragraphs</text><text x="105" y="730">•  Data Structure: Two-column parallel corpus</text><text x="105" y="775">•  Format: CSV</text><text x="105" y="820">•  Source: Ethiopian Federal Negarit Gazette proclamations and regulations.</text></g>
+  <rect x="1130" y="290" width="300" height="540" rx="12" fill="#0b1424" stroke="#1d2c43"/><text x="1160" y="350" fill="#91a4bd" font-family="Arial" font-size="18">Downloads last month</text><text x="1370" y="350" fill="#f1f5f9" font-family="Arial" font-size="20" font-weight="700">4</text><rect x="1160" y="480" width="115" height="70" rx="12" fill="#122039"/><text x="1180" y="510" fill="#91a4bd" font-family="Arial" font-size="15">Total file size:</text><text x="1180" y="537" fill="#f1f5f9" font-family="Arial" font-size="20" font-weight="700">202 MB</text>
+</svg>
